@@ -34,6 +34,16 @@ config.reload()
 config.ENVIRONMENT == Environment.Production
 ```
 
+
+## Features
+  - Globally accessable configuration classes
+  - Easily pull from many sources of configuration
+  - Prioritize sources of configuration
+  - Typed configuration values:
+    - `Enum` types can be used to limit the values allowed
+    - `converter` functions can turn stringly typed or primitive types into complex types such as dicts or classes
+
+
 ## TODO
   - [] Reload method
   - [] CLI source
@@ -46,9 +56,13 @@ config.ENVIRONMENT == Environment.Production
   - [] Comprehensive docs
          Includes docs on adding your own sources.
 
+
 ## Contribution
 
-Issues and Pull Requests on open issues welcome.
+Feature requests, issues, and Pull Requests welcome.
+Please file an issue with a feature request or suggestion intended to prompt discussion
+before submitting a PR that implements new functionality to avoid writing code that
+conflicts with the goals of the project.
 
 
 ## License
