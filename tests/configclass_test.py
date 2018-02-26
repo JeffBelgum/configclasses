@@ -6,6 +6,11 @@ import pytest
 from configclasses import configclass, Environment, LogLevel, EnvironmentSource, JsonSource, field, kv_list
 
 
+# TODO: Test of all config sources with interactions, None types, 
+#       missing types, conflicting types, order of precidence,
+#       sources that cannot be reached.
+
+
 def test_empty_configclass_with_default_readers():
     @configclass
     class Configuration:
