@@ -1,9 +1,12 @@
-from dataclasses import MISSING
+import argparse
+from enum import Enum
 import json
-import toml
 import os
 import sys
 import configparser
+
+from dataclasses import MISSING
+import toml
 
 from .conversions import quote_stripped
 
@@ -160,6 +163,56 @@ class IniSource(Source):
         return super().get(field.upper(), default)
 
 
+class FieldsDependentSource(Source):
+    """
+    Source that requires the configclass pass in the fields that it knows about
+    before any calls to get.
+    """
+    def get(self, field, default=MISSING):
+        if not hasattr(self, "canonical_kv_mapping"):
+            raise RuntimeError("Source must be provided with configclass source before values can be accessed")
+        return super().get(field, default)
+
+
+class CommandLineSource(FieldsDependentSource):
+    """
+    Get configuration values from command line arguments.
+    
+    Optionally pass in a prexisting `argparse.ArgumentParser` instance to add
+    to an existing set of command line arguments rather than only using auto-generated
+    command line arguments.
+    """
+    def __init__(self, argparse=None, argv=sys.argv):
+        self.parser = argparse
+        self.argv = argv
+
+    def update_with_fields(self, fields):
+        if self.parser is None:
+            self.parser = argparse.ArgumentParser()
+
+        names = set()
+        for name, field in fields.items():
+            names.add(name)
+            if issubclass(field.type, Enum):
+                choices = [variant.name for variant in field.type]
+            else:
+                choices = None
+            if issubclass(field.type, (int, float)):
+                _type = field.type
+            else:
+                _type = str
+
+            self.parser.add_argument(f"--{name}", choices=choices, type=_type)
+
+        args = self.parser.parse_args(self.argv)
+
+        self.canonical_kv_mapping = {}
+        for key, value in vars(args).items():
+            if key not in names:
+                continue
+            self.canonical_kv_mapping[key] = value
+
+
 
 # class ConsulSource(Source):
 #     """
@@ -169,7 +222,7 @@ class IniSource(Source):
 #         self.root = root
 #         self.namespace = namespace
 #         self.fetch_canonical_kv()
-# 
+#
 #     def fetch_canonical_kv(self):
 #         url = f"{self.root.rstrip('/')}/v1/kv/{self.namespace}?recurse=true"
 #         response = requests.get(url, verify=False)
@@ -180,21 +233,15 @@ class IniSource(Source):
 #                 continue
 #             value = entry["Value"]
 #             self.canonical_kv_mapping[key] = value
-# 
+#
 #
 # class AwsParameterStoreSource(Source):
 #     """
 #     Get configuration values from a remote AWS Parameter.
 #     """
-# 
+#
 #
 # class EtcdSource(Source):
 #     """
 #     Get configuration values from etcd key value store.
-#     """
-#
-# 
-# class CommandLineSource(Source):
-#     """
-#     Get configuration values from command line arguments.
 #     """

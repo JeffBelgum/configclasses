@@ -9,7 +9,7 @@ from types import FunctionType
 from dataclasses import dataclass, MISSING, Field as DField
 
 from .conversions import EnumConversionRegistry, to_bool
-from .sources import EnvironmentSource
+from .sources import EnvironmentSource, FieldsDependentSource
 
 
 # The global wrap registry is used to check whether a class has already been
@@ -84,6 +84,12 @@ def _process_config_class(cls, sources):
         cls = type(self)
         if not _INSTANCE_REGISTRY[cls][1]:
             self.sources = sources
+
+            # provide configclass fields to sources that need them to work properly
+            for source in self.sources:
+                if isinstance(source, FieldsDependentSource):
+                    source.update_with_fields(cls.__dataclass_fields__)
+
             kwargs = self.kwargs_from_fields()
             original_init_fn(self, **kwargs)
 

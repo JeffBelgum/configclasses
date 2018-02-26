@@ -6,7 +6,7 @@ import pytest
 
 from dataclasses import MISSING
 
-from configclasses import DotEnvSource, EnvironmentSource, configclass, Environment, LogLevel, kv_list, JsonSource, TomlSource, IniSource
+from configclasses import DotEnvSource, EnvironmentSource, configclass, Environment, LogLevel, kv_list, JsonSource, TomlSource, IniSource, CommandLineSource
 
 import requests
 requests.urllib3.disable_warnings()
@@ -132,15 +132,15 @@ def test_toml_source():
     string = """
     HOST = "top-level-host"
     PORT = 1
-   
+
     [APP-1]
     HOST = "app-1-host"
     PORT = 2
-   
+
     [APP-1.SERVICE-1.INSTANCE-1]
     HOST = "nested-host"
     PORT = 3
-   
+
     [APP-2]
     HOST = "app-2-host"
     PORT = 4
@@ -173,17 +173,18 @@ def test_toml_source():
     with pytest.raises(KeyError):
         TomlSource(filehandle=filehandle, namespace=["APP-3"])
 
+from configclasses import configclass, Environment, LogLevel, EnvironmentSource, JsonSource, field, kv_list
 
 def test_ini_source():
     string = """
     [DEFAULT]
     HOST = "default-host"
     PORT = 0
-   
+
     [APP-1]
     HOST = "app-1-host"
     PORT = "1"
-   
+
     [APP-2]
     HOST = "app-2-host"
     PORT = 2
@@ -210,3 +211,26 @@ def test_ini_source():
     filehandle = io.StringIO(string)
     with pytest.raises(KeyError):
         IniSource(filehandle=filehandle, namespace="APP-3")
+
+
+def test_cli_source():
+    argv = [
+        "--HOST", "localhost",
+        "--PORT", "443",
+        "--ENVIRONMENT", "Production",
+    ]
+    cli_src = CommandLineSource(argv=argv)
+
+    with pytest.raises(RuntimeError):
+        cli_src.get("HOST")
+
+    @configclass(sources=[cli_src])
+    class Configuration:
+        ENVIRONMENT: Environment
+        HOST: str
+        PORT: int
+
+    config = Configuration()
+    assert config.HOST == "localhost"
+    assert config.PORT == 443
+    assert config.ENVIRONMENT == Environment.Production
