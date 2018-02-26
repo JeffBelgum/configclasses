@@ -45,15 +45,15 @@ config.ENVIRONMENT == Environment.Production
 
 
 ## TODO
-  - [] Reload method
-  - [] CLI source
-  - [] Deal with sources that only provide stringly typed values and values that provide other primitives
-  - [] Type converters
-  - [] Multiple named configuration objects
-  - [] Some sources might be case-insensitive.
-  - [] Async/Sync versions of sources
-  - [] Research and design push updates (as opposed to polling updates)
-  - [] Comprehensive docs
+  - [ ] Reload method
+  - [ ] CLI source
+  - [ ] Deal with sources that only provide stringly typed values and values that provide other primitives
+  - [ ] Type converters
+  - [ ] Multiple named configuration objects
+  - [ ] Some sources might be case-insensitive.
+  - [ ] Async/Sync versions of sources
+  - [ ] Research and design push updates (as opposed to polling updates)
+  - [ ] Comprehensive docs
          Includes docs on adding your own sources.
 
 
