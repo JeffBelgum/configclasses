@@ -1,6 +1,6 @@
 # ConfigClasses
 
-Python's dataclasses module [PEP-557](https://www.python.org/dev/peps/pep-0557/) for configuration.
+Think python's dataclasses module [PEP-557](https://www.python.org/dev/peps/pep-0557/) for configuration.
 Pulls in configuration from various sources into a single integrated, global configuration
 object. The configuration data can be reloaded on demand.
 
@@ -8,7 +8,7 @@ object. The configuration data can be reloaded on demand.
 ## Quickstart
 
 ```python
-from configclasses  import configclass, LogLevel, Environment
+from configclasses import configclass, LogLevel, Environment
 
 @configclass
 class Configuration():
