@@ -6,6 +6,7 @@ import sys
 import configparser
 
 from dataclasses import MISSING
+import requests
 import toml
 
 from .conversions import quote_stripped
@@ -214,27 +215,28 @@ class CommandLineSource(FieldsDependentSource):
 
 
 
-# class ConsulSource(Source):
-#     """
-#     Get configuration values from a remote consul key value store.
-#     """
-#     def __init__(self, root, namespace=''):
-#         self.root = root
-#         self.namespace = namespace
-#         self.fetch_canonical_kv()
-#
-#     def fetch_canonical_kv(self):
-#         url = f"{self.root.rstrip('/')}/v1/kv/{self.namespace}?recurse=true"
-#         response = requests.get(url, verify=False)
-#         self.canonical_kv_mapping = {}
-#         for entry in response.json():
-#             key = entry["Key"][len(self.namespace) + 1:].upper()
-#             if not key:
-#                 continue
-#             value = entry["Value"]
-#             self.canonical_kv_mapping[key] = value
-#
-#
+class ConsulSource(Source):
+    """
+    Get configuration values from a remote consul key value store.
+    """
+    def __init__(self, root, namespace="", http=requests):
+        self.root = root.rstrip("/")
+        self.namespace = namespace
+        self.http = http
+        self.fetch_canonical_kv()
+
+    def fetch_canonical_kv(self):
+        url = f"{self.root}/v1/kv/{self.namespace}?recurse=true"
+        response = self.http.get(url)
+        self.canonical_kv_mapping = {}
+        for entry in response.json():
+            key = entry["Key"][len(self.namespace) + 1:].upper()
+            if not key:
+                continue
+            value = entry["Value"]
+            self.canonical_kv_mapping[key] = value
+
+
 # class AwsParameterStoreSource(Source):
 #     """
 #     Get configuration values from a remote AWS Parameter.
@@ -244,4 +246,9 @@ class CommandLineSource(FieldsDependentSource):
 # class EtcdSource(Source):
 #     """
 #     Get configuration values from etcd key value store.
+#     """
+#
+# class RedisSource(Source):
+#     """
+#     Get configuration values from a redis key value store.
 #     """

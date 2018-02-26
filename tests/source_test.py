@@ -1,15 +1,13 @@
 import io
 import json
 from typing import Optional
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, MagicMock
 import pytest
 
 from dataclasses import MISSING
 
-from configclasses import DotEnvSource, EnvironmentSource, configclass, Environment, LogLevel, kv_list, JsonSource, TomlSource, IniSource, CommandLineSource
+from configclasses import DotEnvSource, EnvironmentSource, configclass, Environment, LogLevel, kv_list, JsonSource, TomlSource, IniSource, CommandLineSource, ConsulSource
 
-import requests
-requests.urllib3.disable_warnings()
 
 def test_environment_source():
     environ = {"VAR1": "1", "var2": "2"}
@@ -234,3 +232,50 @@ def test_cli_source():
     assert config.HOST == "localhost"
     assert config.PORT == 443
     assert config.ENVIRONMENT == Environment.Production
+
+def test_consul_source():
+    # Mock data
+    mock_consul_response = [
+       {
+           "LockIndex": 0,
+           "Key": "test/namespace/HOST",
+           "Flags": 0,
+           "Value": "localhost",
+           "CreateIndex": 000000,
+           "ModifyIndex": 000000
+       },
+       {
+           "LockIndex": 0,
+           "Key": "test/namespace/PORT",
+           "Flags": 0,
+           "Value": 8080,
+           "CreateIndex": 000000,
+           "ModifyIndex": 000000
+       },
+       {
+           "LockIndex": 0,
+           "Key": "test/namespace/UNUSED",
+           "Flags": 0,
+           "Value": "unused value",
+           "CreateIndex": 000000,
+           "ModifyIndex": 000000
+       },
+       {
+           "LockIndex": 0,
+           "Key": "test/namespace/NULL",
+           "Flags": 0,
+           "Value": None,
+           "CreateIndex": 000000,
+           "ModifyIndex": 000000
+       },
+    ]
+    response = MagicMock()
+    response.json.return_value = mock_consul_response
+    http = MagicMock()
+    http.get.return_value = response
+
+    # create and test source
+    src = ConsulSource(root="http://fake-consul", namespace="test/namespace", http=http)
+    assert src.get("HOST") == "localhost"
+    assert src.get("PORT") == 8080
+    assert src.get("NULL") == None
