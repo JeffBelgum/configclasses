@@ -10,6 +10,7 @@ object. The configuration data can be reloaded on demand.
 ```python
 from configclasses import configclass, LogLevel, Environment
 
+# Wrap your configuration class in the `configclass` decorator
 @configclass
 class Configuration():
     ENVIRONMENT: Environment
@@ -19,6 +20,7 @@ class Configuration():
     DB_ADDRESS: str
     DB_PORT: int
 
+# All instances point to the same values
 config = Configuration()
 
 # access fields by name
@@ -37,19 +39,28 @@ config.ENVIRONMENT == Environment.Production
 
 ## Features
   - Globally accessable configuration classes
-  - Easily pull from many sources of configuration
+  - Easily pull from many sources of configuration:
+    - Environment variables
+    - Command line arguments
+    - Dotenv files
+    - Json files
+    - Toml files
+    - Ini files
+    - Consul Key/Value store
+    - Planned sources: AWS Parameter Store, Etcd, Redis
   - Prioritize sources of configuration
-  - Typed configuration values:
+  - Typed configuration values out of the box
+    - primitive types supported out of the box
     - `Enum` types can be used to limit the values allowed
     - `converter` functions can turn stringly typed or primitive types into complex types such as dicts or classes
 
 
 ## TODO
   - [ ] Reload method
-  - [ ] CLI source
+  - [x] CLI source
   - [ ] Deal with sources that only provide stringly typed values and values that provide other primitives
-  - [ ] Type converters
-  - [ ] Multiple named configuration objects
+  - [x] Type converters
+  - [x] Multiple named configuration objects
   - [ ] Some sources might be case-insensitive.
   - [ ] Async/Sync versions of sources
   - [ ] Research and design push updates (as opposed to polling updates)
@@ -71,7 +82,7 @@ Licensor solely permits licensee to license under either of the following two op
  * Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
  * MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
-### Contribution
+##### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you shall be dual licensed as above, without any
