@@ -21,6 +21,20 @@ def test_environment_source():
     assert src.get("VAR2") is MISSING
     assert src.get("var3") is MISSING
 
+def test_environment_source_reload():
+    environ = {"VAR1": "1", "var2": "2"}
+    src = EnvironmentSource(environ=environ)
+
+    assert src.get("VAR1") == "1"
+    assert src.get("VAR3") is MISSING
+
+    environ["VAR1"] = "one"
+    environ["VAR3"] = "three"
+    src.reload()
+
+    assert src.get("VAR1") == "one"
+    assert src.get("VAR3") == "three"
+
 def test_namespaced_environment_source():
     environ = {"JB_VAR1": "1", "VAR1": "not 1", "jb_VAR2": "2"}
     src = EnvironmentSource(namespace="JB_", environ=environ)
@@ -170,8 +184,6 @@ def test_toml_source():
     filehandle = io.StringIO(string)
     with pytest.raises(KeyError):
         TomlSource(filehandle=filehandle, namespace=["APP-3"])
-
-from configclasses import configclass, Environment, LogLevel, EnvironmentSource, JsonSource, field, kv_list
 
 def test_ini_source():
     string = """

@@ -132,9 +132,22 @@ def _process_config_class(cls, sources):
             # Most primitive types handle conversions in the constructor.
             return field.type(raw_value)
 
+    def reload(self):
+        """
+        Reload all sources and then re-init self.
+        """
+        for source in self.sources:
+            source.reload()
+
+        global _INSTANCE_REGISTRY
+        cls = type(self)
+        _INSTANCE_REGISTRY[cls][1] = False
+        self.__init__()
 
     datacls.__new__ = __new__
     datacls.__init__ = __init__
     datacls.kwargs_from_fields = kwargs_from_fields
     datacls.convert_raw_value = convert_raw_value
+    datacls.reload = reload
+
     return datacls

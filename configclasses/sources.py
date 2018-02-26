@@ -32,6 +32,11 @@ class Source:
             return default
         return value
 
+    def reload(self):
+        """
+        No-op reload for sources that don't have reload functionality.
+        """
+
 
 class EnvironmentSource(Source):
     """
@@ -39,43 +44,29 @@ class EnvironmentSource(Source):
     """
     def __init__(self, namespace=None, environ=os.environ):
         self.namespace = namespace
+        self.environ = environ
+        self.reload()
+
+    def reload(self):
         self.canonical_kv_mapping = {}
-        for key, value in environ.items():
+        for key, value in self.environ.items():
             key = self.namespace_stripped_key(key)
             if key is not None:
                 value = quote_stripped(value)
                 self.canonical_kv_mapping[key] = value
 
 
-class DotEnvSource(Source):
-    """
-    Get configuration values from a `.env` file.
-    """
-    def __init__(self, path='.env', namespace=None):
-        self.path = path
-        self.namespace = namespace
-        self.canonical_kv_mapping = {}
-        with open(self.path) as f:
-            for line in f.read().split("\n"):
-                try:
-                    key, value = line.split("=", 1)
-                except ValueError:
-                    continue
-                key, value = key.strip(), value.strip()
-                key = self.namespace_stripped_key(key)
-                if key is not None:
-                    value = quote_stripped(value)
-                    self.canonical_kv_mapping[key] = value
-
-
-class JsonSource(Source):
-    """
-    Get configuration values from a json encoded file or filehandle.
-    """
+class FileSource(Source):
     def __init__(self, path=None, filehandle=None, namespace=None):
         self.path = path
         self.filehandle = filehandle
         self.namespace = namespace
+        self.filestart = None
+        if self.filehandle and self.filehandle.seekable():
+            filestart = self.filehandle.tell()
+        self.reload()
+
+    def reload(self):
         if self.path is not None and self.filehandle is not None:
             raise ValueError("Cannot pass both path and filehandle. Try passing one or the other.")
         elif self.path is None and self.filehandle is None:
@@ -84,8 +75,36 @@ class JsonSource(Source):
             with open(self.path) as fh:
                 self.canonical_from_filehandle(fh)
         else:
+            if self.filestart is not None:
+                self.filehandle.seek(self.filestart)
             self.canonical_from_filehandle(self.filehandle)
 
+
+class DotEnvSource(FileSource):
+    """
+    Get configuration values from a `.env` file.
+    """
+    def __init__(self, path='.env', filehandle=None, namespace=None):
+        super().__init__(path, filehandle, namespace)
+
+    def canonical_from_filehandle(self, fh):
+        self.canonical_kv_mapping = {}
+        for line in fh.read().split("\n"):
+            try:
+                key, value = line.split("=", 1)
+            except ValueError:
+                continue
+            key, value = key.strip(), value.strip()
+            key = self.namespace_stripped_key(key)
+            if key is not None:
+                value = quote_stripped(value)
+                self.canonical_kv_mapping[key] = value
+
+
+class JsonSource(FileSource):
+    """
+    Get configuration values from a json encoded file or filehandle.
+    """
     def canonical_from_filehandle(self, fh):
         obj = json.load(fh)
         if self.namespace is None:
@@ -99,24 +118,10 @@ class JsonSource(Source):
         self.canonical_kv_mapping = {k: v for k, v in obj.items()}
 
 
-class TomlSource(Source):
+class TomlSource(FileSource):
     """
     Get configuration values from a `.toml` file.
     """
-    def __init__(self, path=None, filehandle=None, namespace=None):
-        self.path = path
-        self.filehandle = filehandle
-        self.namespace = namespace
-        if self.path is not None and self.filehandle is not None:
-            raise ValueError("Cannot pass both path and filehandle. Try passing one or the other.")
-        elif self.path is None and self.filehandle is None:
-            raise ValueError("Either path or filehandle argument must be passed.")
-        if self.path:
-            with open(self.path) as fh:
-                self.canonical_from_filehandle(fh)
-        else:
-            self.canonical_from_filehandle(self.filehandle)
-
     def canonical_from_filehandle(self, fh):
         obj = toml.load(fh)
         if self.namespace is None:
@@ -130,25 +135,11 @@ class TomlSource(Source):
         self.canonical_kv_mapping = {k: v for k, v in obj.items()}
 
 
-class IniSource(Source):
+class IniSource(FileSource):
     """
     Get configuration values from a `.ini` file.
     Ini is case insensitive.
     """
-    def __init__(self, path=None, filehandle=None, namespace=None):
-        self.path = path
-        self.filehandle = filehandle
-        self.namespace = namespace
-        if self.path is not None and self.filehandle is not None:
-            raise ValueError("Cannot pass both path and filehandle. Try passing one or the other.")
-        elif self.path is None and self.filehandle is None:
-            raise ValueError("Either path or filehandle argument must be passed.")
-        if self.path:
-            with open(self.path) as fh:
-                self.canonical_from_filehandle(fh)
-        else:
-            self.canonical_from_filehandle(self.filehandle)
-
     def canonical_from_filehandle(self, fh):
         config = configparser.ConfigParser()
         config.read_file(fh)
@@ -223,9 +214,9 @@ class ConsulSource(Source):
         self.root = root.rstrip("/")
         self.namespace = namespace
         self.http = http
-        self.fetch_canonical_kv()
+        self.reload()
 
-    def fetch_canonical_kv(self):
+    def reload(self):
         url = f"{self.root}/v1/kv/{self.namespace}?recurse=true"
         response = self.http.get(url)
         self.canonical_kv_mapping = {}

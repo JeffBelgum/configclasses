@@ -139,3 +139,21 @@ def test_configclass_with_defaults():
     config = Configuration()
     assert config.INT_FIELD == 1
     assert config.STRING_FIELD == "default string"
+
+
+def test_basic_configclass_reload():
+    environ = {
+        "HOST": "localhost",
+    }
+    env_src = EnvironmentSource(environ=environ)
+
+    @configclass(sources=[env_src])
+    class Configuration:
+        HOST: str
+
+    config = Configuration()
+    assert config.HOST == "localhost"
+    environ["HOST"] = "newhost"
+    assert config.HOST == "localhost"
+    config.reload()
+    assert config.HOST == "newhost"
