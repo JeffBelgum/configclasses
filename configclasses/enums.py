@@ -25,6 +25,6 @@ class LogLevel(Enum):
     NotSet = logging.NOTSET
     Debug = logging.DEBUG
     Info = logging.INFO
-    Warn = logging.WARNING
+    Warning = logging.WARNING
     Error = logging.ERROR
     Critical = logging.CRITICAL

@@ -39,12 +39,16 @@ def field(*, converter=None, default=MISSING, default_factory=MISSING, init=True
     return Field(converter, default, default_factory, init, repr, hash, compare, metadata)
 
 
-def configclass(_cls=None, *, sources=None):
+def configclass(_cls=None, *, source=None, sources=None):
     def wrap(cls):
-        if sources is None:
-            _sources = [EnvironmentSource()]
-        else:
+        if source is not None and sources is not None:
+            raise RuntimeError("Cannot pass both `source` and `sources` to configclass decorator. Pass one or the other.")
+        if source is not None:
+            sources = [source]
+        elif sources is not None:
             _sources = sources
+        else:
+            _sources = [EnvironmentSource()]
         return _process_config_class(cls, _sources)
 
     # Called with keyword args

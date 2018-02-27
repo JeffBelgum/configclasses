@@ -11,20 +11,24 @@ object. The configuration data can be reloaded on demand.
 from configclasses import configclass, LogLevel, Environment
 
 # Wrap your configuration class in the `configclass` decorator
+# By default, it looks for matching variables in the environment.
 @configclass
-class Configuration():
-    ENVIRONMENT: Environment
+class Configuration:
     HOST: str
     PORT: int
-    LOG_LEVEL: LogLevel
-    DB_ADDRESS: str
-    DB_PORT: int
+    DB_HOST: str = "localhost"  # Default if `DB_HOST` is not set as an environment variable.
+    DB_PORT: int = 5432         # Default if `DB_PORT` is not set as an environment variable.
+    ENVIRONMENT: Environment    # Enum used to specify the set of valid values
+    LOG_LEVEL: LogLevel         # Enum with the same values as python's logging level constants
 
-# All instances point to the same values
+# Instantiating a `Configuration` will always return the same object
 config = Configuration()
 
 # access fields by name
 config.HOST == "localhost"
+
+# `int` typed fields will be ints
+config.PORT == 8080
 
 # Fields with `Enum` types will have variants as values
 config.ENVIRONMENT == Environment.Development
@@ -34,6 +38,24 @@ config.reload()
 
 # Configuration objects can now have different values
 config.ENVIRONMENT == Environment.Production
+
+
+# Config classes can also be configured with other `sources`
+from configclasses.sources import DotEnvSource, EnvironmentSource
+
+@configclass(sources=[DotEnvSource(), EnvironmentSource()])
+class Configuration:
+    HOST: str
+    PORT: int
+    DB_ADDRESS: str = "localhost"
+    DB_PORT: int = 5432
+    ENVIRONMENT: Environment
+    LOG_LEVEL: LogLevel
+
+# First, a `.env` file will be searched for values, then
+# any values that are not present there will be searched
+# for in the program's environment.
+config = Configuration()
 ```
 
 
@@ -51,12 +73,12 @@ config.ENVIRONMENT == Environment.Production
   - Prioritize sources of configuration
   - Typed configuration values out of the box
     - primitive types supported out of the box
-    - `Enum` types can be used to limit the values allowed
+    - `Enum` types can be used to specify valid values
     - `converter` functions can turn stringly typed or primitive types into complex types such as dicts or classes
 
 
 ## TODO
-  - [ ] Reload method
+  - [x] Reload method
   - [x] CLI source
   - [ ] Deal with sources that only provide stringly typed values and values that provide other primitives
   - [x] Type converters
@@ -64,6 +86,8 @@ config.ENVIRONMENT == Environment.Production
   - [ ] Some sources might be case-insensitive.
   - [ ] Async/Sync versions of sources
   - [ ] Research and design push updates (as opposed to polling updates)
+  - [ ] Better error messages when config values are missing from all sources
+  - [ ] Audit exception types raised.
   - [ ] Comprehensive docs
          Includes docs on adding your own sources.
 
