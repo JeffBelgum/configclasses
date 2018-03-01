@@ -18,9 +18,6 @@ ConfigClasses
 .. image:: https://img.shields.io/pypi/pyversions/configclasses.svg
     :target: https://pypi.python.org/pypi/configclasses
 
-.. image:: https://img.shields.io/github/contributors/jeffbelgum/configclasses.svg
-    :target: https://github.com/jeffbelgum/configclasses/graphs/contributors
-
 
 Release v\ |version|. (:ref:`Installation <install>`)
 
