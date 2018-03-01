@@ -1,5 +1,11 @@
 # ConfigClasses
 
+[![Build Status](https://travis-ci.org/JeffBelgum/configclasses.svg?branch=master)](https://travis-ci.org/JeffBelgum/configclasses)
+[![Pypi](https://img.shields.io/pypi/v/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
+[![License](https://img.shields.io/pypi/l/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
+[![Versions](https://img.shields.io/pypi/pyversions/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
+[![Contributors](https://img.shields.io/github/contributors/jeffbelgum/configclasses.svg)](https://github.com/jeffbelgum/configclasses/graphs/contributors)
+
 Think python's dataclasses module [PEP-557](https://www.python.org/dev/peps/pep-0557/) for configuration.
 Pulls in configuration from various sources into a single integrated, global configuration
 object. The configuration data can be reloaded on demand.
