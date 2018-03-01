@@ -1,0 +1,11 @@
+sudo: false
+language: python
+python:
+  - "3.6"
+  - "3.7-dev"
+
+install: pip install dataclasses requests toml
+
+cache: pip
+
+script: PYTHONPATH=.:$PYTHONPATH pytest tests
