@@ -9,6 +9,9 @@ ConfigClasses
 .. image:: https://travis-ci.org/JeffBelgum/configclasses.svg?branch=master
     :target: https://travis-ci.org/JeffBelgum/configclasses
 
+.. image:: https://codecov.io/gh/JeffBelgum/configclasses/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/JeffBelgum/configclasses
+
 .. image:: https://img.shields.io/pypi/v/configclasses.svg
     :target: https://pypi.python.org/pypi/configclasses
 
