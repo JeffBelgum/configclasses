@@ -48,7 +48,7 @@ def configclass(_cls=None, *, source=None, sources=None):
         if source is not None and sources is not None:
             raise RuntimeError("Cannot pass both `source` and `sources` to configclass decorator. Pass one or the other.")
         if source is not None:
-            sources = [source]
+            _sources = [source]
         elif sources is not None:
             _sources = sources
         else:
