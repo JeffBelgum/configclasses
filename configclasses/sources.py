@@ -205,7 +205,6 @@ class CommandLineSource(FieldsDependentSource):
             self.canonical_kv_mapping[key] = value
 
 
-
 class ConsulSource(Source):
     """
     Get configuration values from a remote consul key value store.

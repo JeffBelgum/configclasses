@@ -40,6 +40,10 @@ def field(*, converter=None, default=MISSING, default_factory=MISSING, init=True
 
 
 def configclass(_cls=None, *, source=None, sources=None):
+    """
+    Decorate your configuration classes with the `configclass` decorator to turn them into
+    Configuration Classes 
+    """
     def wrap(cls):
         if source is not None and sources is not None:
             raise RuntimeError("Cannot pass both `source` and `sources` to configclass decorator. Pass one or the other.")

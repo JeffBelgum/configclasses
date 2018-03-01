@@ -5,6 +5,24 @@ Pulls in configuration from various sources into a single integrated, global con
 object. The configuration data can be reloaded on demand.
 
 
+## Features
+  - Globally accessable configuration classes
+  - Easily pull from many sources of configuration:
+    - Environment variables
+    - Command line arguments
+    - Dotenv files
+    - Json files
+    - Toml files
+    - Ini files
+    - Consul Key/Value store
+    - Planned sources: AWS Parameter Store, Etcd, Redis
+  - prioritization when multiple sources are used together.
+  - Typed configuration values out of the box
+    - primitive types supported out of the box
+    - `Enum` types can be used to specify valid values
+    - `converter` functions can turn stringly typed or primitive types into complex types such as dicts or classes
+
+
 ## Quickstart
 
 ```python
@@ -57,24 +75,6 @@ class Configuration:
 # for in the program's environment.
 config = Configuration()
 ```
-
-
-## Features
-  - Globally accessable configuration classes
-  - Easily pull from many sources of configuration:
-    - Environment variables
-    - Command line arguments
-    - Dotenv files
-    - Json files
-    - Toml files
-    - Ini files
-    - Consul Key/Value store
-    - Planned sources: AWS Parameter Store, Etcd, Redis
-  - Prioritize sources of configuration
-  - Typed configuration values out of the box
-    - primitive types supported out of the box
-    - `Enum` types can be used to specify valid values
-    - `converter` functions can turn stringly typed or primitive types into complex types such as dicts or classes
 
 
 ## TODO
