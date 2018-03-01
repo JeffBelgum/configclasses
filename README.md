@@ -4,6 +4,8 @@ Think python's dataclasses module [PEP-557](https://www.python.org/dev/peps/pep-
 Pulls in configuration from various sources into a single integrated, global configuration
 object. The configuration data can be reloaded on demand.
 
+Read the [Documentation](https://configclasses.readthedocs.io/en/latest/)
+
 
 ## Features
   - Globally accessable configuration classes
