@@ -4,6 +4,7 @@ global configuration objects.
 """
 
 from enum import Enum
+import re
 from types import FunctionType
 
 from dataclasses import dataclass, MISSING, Field as DField
@@ -20,6 +21,8 @@ from .sources import EnvironmentSource, FieldsDependentSource
 # The shape of the instance registry dict is {ClassType: [instance, initialized_bool_flag]}
 _WRAP_REGISTRY = set()
 _INSTANCE_REGISTRY = {}
+
+MISSING_ARGUMENTS_REGEX = re.compile(r"__init__\(\) missing (?P<nargs>\d+) required positional arguments?: (?P<names>.*)\Z")
 
 class Field(DField):
     """
@@ -99,7 +102,17 @@ def _process_config_class(cls, sources):
                     source.update_with_fields(cls.__dataclass_fields__)
 
             kwargs = self.kwargs_from_fields()
-            original_init_fn(self, **kwargs)
+            try:
+                original_init_fn(self, **kwargs)
+            except TypeError as exc:
+                match = MISSING_ARGUMENTS_REGEX.match(str(exc))
+                if match is not None:
+                    nargs = int(match.group("nargs"))
+                    names = match.group("names")
+                    field_fields = "fields" if nargs > 1 else "field"
+                    raise ValueError(f"'{type(self).__name__}' is missing {nargs} required configuration {field_fields}: {names}")
+                else:
+                    raise
 
             initialized = True
             _INSTANCE_REGISTRY[cls][1] = initialized
