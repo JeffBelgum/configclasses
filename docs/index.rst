@@ -51,18 +51,16 @@ A Basic Example
         PORT: int
         DATABASE: str
 
-    # Instantiating `Configuration` will always return the same
-    # singleton object. This way you can create a reference to
-    # it from any module you like and the configuration values
-    # will be consistent from instance to instance.
+    # Fields are populated when you construct a Configuration instance
     config = Configuration()
 
     # Access fields by name.
     config.HOST == "localhost"
 
-``configclass`` defaults to searching environment variables to populate fields.
-In this case, it expects environment variables to be set for ``HOST``, ``PORT``,
-and ``DATABASE``.
+That's it! You now have a easy to use configuration class that fetches and validates
+all the configuration values your application requires. ``configclass`` defaults to 
+searching environment variables to populate fields. In this case, it expects environment 
+variables to be set for ``HOST``, ``PORT``, and ``DATABASE``.
 
 A `Slightly` More Advanced Example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -87,7 +85,9 @@ data.
         DATABASE: str = "psql://localhost:5432"  # Set a default value
 
     # Instantiating `Configuration` will always return the same
-    # singleton object.
+    # singleton object. This way you can create a reference to
+    # it from any module you like and the configuration values
+    # will be consistent from instance to instance.
     config = Configuration()
 
     # Access fields by name.
