@@ -153,6 +153,7 @@ User's Guide
 
 Tutorials to guide you through the most common uses of the library as
 well as more advanced scenarios.
+
 .. toctree::
   :maxdepth: 2
 
