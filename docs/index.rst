@@ -57,10 +57,12 @@ A Basic Example
     # Access fields by name.
     config.HOST == "localhost"
 
-That's it! You now have a easy to use configuration class that fetches and validates
-all the configuration values your application requires. ``configclass`` defaults to 
-searching environment variables to populate fields. In this case, it expects environment 
-variables to be set for ``HOST``, ``PORT``, and ``DATABASE``.
+That's it!
+
+You now have a easy to use configuration class that fetches and validates all the
+configuration values your application requires. It defaults to searching environment
+variables to populate fields. In this case, it expects environment variables to be
+set for ``HOST``, ``PORT``, and ``DATABASE``.
 
 A `Slightly` More Advanced Example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
