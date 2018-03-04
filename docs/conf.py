@@ -17,7 +17,14 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 import configclasses
-from configclasses import __version__
+from configclasses import (
+    __version__,
+    configclass,
+    conversions,
+    enums,
+    field,
+    sources,
+)
 
 
 # -- Project information -----------------------------------------------------

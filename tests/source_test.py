@@ -6,7 +6,10 @@ import pytest
 
 from dataclasses import MISSING
 
-from configclasses import DotEnvSource, EnvironmentSource, configclass, Environment, LogLevel, kv_list, JsonSource, TomlSource, IniSource, CommandLineSource, ConsulSource
+from configclasses import configclass
+from configclasses.enums import Environment, LogLevel
+from configclasses.sources import DotEnvSource, EnvironmentSource, JsonSource, TomlSource, IniSource, CommandLineSource, ConsulSource
+from configclasses.conversions import kv_list
 
 
 def test_environment_source():

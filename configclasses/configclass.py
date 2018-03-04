@@ -35,7 +35,22 @@ class Field(DField):
 
 def field(*, converter=None, default=MISSING, default_factory=MISSING, init=True, repr=True, hash=None, compare=True, metadata=None):
     """
-    factory function to create `Field` instances
+    This function can be used if the field differs from the default functionality.
+    It is the same as the field function in the dataclasses module except that it
+    includes a ``converter`` argument that can be used to convert from a primitive
+    type to a more complex type such as a dict or custom class.
+
+    :param converter: is a function that takes a single argument and constructs a return value that is the same as the conficlass field's type annotation.
+    :param default: is the default value of the field.
+    :param default_factory: is a 0-argument function called to initialize a field's value.
+    :param init: if True, the field will be a parameter to the class's __init__() function.
+    :param repr: if True, the field will be included in the object's repr().
+    :param hash: if True, the field will be included in the object's hash().
+    :param compare: if True, the field will be used in comparison functions.
+    :param metadata: if specified, must be a mapping which is stored but not otherwise examined by dataclass.
+
+    :raises ValueError: It is an error to specify both default and default_factory.
+
     """
     if default is not MISSING and default_factory is not MISSING:
         raise ValueError('cannot specify both default and default_factory')
@@ -44,8 +59,44 @@ def field(*, converter=None, default=MISSING, default_factory=MISSING, init=True
 
 def configclass(_cls=None, *, source=None, sources=None):
     """
+    Turn a class into a configclass with the default EnvironmentSource used.
+
+    For example, configuring the host and port for a web application might look
+    like this:
+
+    >>> from configclasses import configclass
+    >>> @configclass
+    ... class Configuration:
+    ...     HOST: str
+    ...     PORT: int
+
+    Turn a class into a configclass using the user provided source or sources list.
+
+    :param source: single ``Source`` used to fetch values.
+    :param sources: list of ``Source`` used to fetch values, prioritized from first to last.
+
+    :raises ValueError: The user must pass `either` the source `or` a list of sources. It is an error to provide both.
+
+    Configuring the host and port for a web application using both command line arguments
+    and environment variables as sources:
+
+    >>> from configclasses import configclass, sources
+    >>> cli_source = CommandLineSource()
+    >>> env_source = EnvironmentSource()
+    >>> @configclass(sources=[cli_source, env_source])
+    ... class Configuration:
+    ...     HOST: str
+    ...     PORT: int
+
+    Because the ``cli_source`` comes before the ``env_source`` in the list of ``sources``,
+    it will be prioritized when fetching values that are found in both sources.
+
     Decorate your configuration classes with the `configclass` decorator to turn them into
-    Configuration Classes 
+    Configuration Classes.
+
+    The returned configclass will have a ``.reload()`` method present, that can be used to
+    reload values from configuration sources on demand. This reload affects `all` instances
+    of the configclass you are reloading.
     """
     def wrap(cls):
         if source is not None and sources is not None:

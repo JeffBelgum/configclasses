@@ -1,7 +1,15 @@
+"""
+Functions and classes for converting from one type to another.
+
+Some are useful only internally, others have utility outside of
+the internals of configclasses. See the documentation for
+conversions considered useful to api consumers.
+"""
+
 from decimal import Decimal
 
 
-def to_bool(value):
+def to_bool(value) -> bool:
     """
     Convert a bool, string type or numeric type to a bool.
 
@@ -45,7 +53,7 @@ class EnumConversionRegistry():
 
     def add_enum(self, enum):
         self.value_mappings[enum] = {variant.value: variant.value for variant in enum}
-        
+
         variants_by_name = {}
         for variant in enum:
             variants_by_name[variant.name.upper()] = variant.name
@@ -72,7 +80,7 @@ class EnumConversionRegistry():
             raise ValueError(f"Invalid value {raw_value} for Enum {enum}")
 
 
-def quote_stripped(value):
+def quote_stripped(value: str) -> str:
     """
     Strip out a single level of single (') or double (") quotes.
     """
@@ -83,25 +91,36 @@ def quote_stripped(value):
     return value
 
 
-def kv_list(str_value):
+def kv_list(value: str) -> dict:
     """
     Kv lists are comma seperated pairs of values where a pair is defined as
-    `key=value`. For example: "a=1,b=2" -> {"a": 1, "b": 2}.
+    ``"key=value"``. Whitespace around a key or value is stripped unless
+    text is quoted. Empty pairs are skipped.
 
-    Whitespace around a key or value is stripped unless text is quoted.
+    :raises ValueError: on a malformed key value pair.
 
-    Skips empty pairs and raises an exception on any other malformed pair
+    An example usage:
+
+    >>> kv_list("a=1,b=2")
+    {"a": "1", "b": "2"}
+
+    Typically it is used in specifying a configclass:
+
+    >>> @configclass
+    ... class Configuration:
+    ...     PAIRS: dict = field(converter=kv_list)
+
+    Then a string of key=value pairs will be converted into a dictionary
+    in the ``Configuration`` class.
     """
     kv = {}
-    for pair in str_value.split(","):
+    for pair in value.split(","):
         if not pair.strip():
             continue  # Skip empty pairs
         # TODO: Raise more helpful exception on bad split
-        key, value = pair.split("=", 1)
-        key, value = key.strip(), value.strip()
-        key, value = quote_stripped(key), quote_stripped(value)
-        kv[key] = value
+        key, val = pair.split("=", 1)
+        key, val = key.strip(), val.strip()
+        key, val = quote_stripped(key), quote_stripped(val)
+        kv[key] = val
 
     return kv
-
-    # return {item.split("=")[0]: item.split("=")[1] for item in str_value.split()}
