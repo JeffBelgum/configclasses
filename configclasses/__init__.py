@@ -1,5 +1,5 @@
 """
-configclasses provides a simple yet powerful way to define and fetch 
+configclasses provides a simple yet powerful way to define and fetch
 configuration values for your application by extending python's dataclasses
 with additional functionality.
 

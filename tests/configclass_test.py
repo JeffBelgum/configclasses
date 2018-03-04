@@ -9,7 +9,7 @@ from configclasses.sources import EnvironmentSource, JsonSource
 from configclasses.conversions import kv_list
 
 
-# TODO: Test of all config sources with interactions, None types, 
+# TODO: Test of all config sources with interactions, None types,
 #       missing types, conflicting types, order of precidence,
 #       sources that cannot be reached.
 

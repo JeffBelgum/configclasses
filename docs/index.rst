@@ -28,9 +28,13 @@ Release v\ |version|. (:ref:`Installation <install>`)
 Introduction
 ------------
 
-Think python's dataclasses module (`PEP-557 <https://www.python.org/dev/peps/pep-0557/>`_) for configuration.
-Pulls in configuration from various sources into a single integrated, global configuration
-object. The configuration data can be reloaded on demand.
+configclasses provides a simple yet powerful way to define and fetch
+configuration values for your application by extending python's dataclasses
+(`PEP-557 <https://www.python.org/dev/peps/pep-0557/>`_) with additional
+functionality.
+
+Configuration values are fetched on demand from various sources,
+validated, and stored in a single strongly typed configuration object.
 
 
 A Basic Example
@@ -39,20 +43,20 @@ A Basic Example
 ::
 
     from configclasses import configclass
-    
+
     # Wrap your configuration class in the `configclass` decorator
     @configclass
     class Configuration:
         HOST: str
         PORT: int
         DATABASE: str
-    
-    # Instantiating `Configuration` will always return the same 
-    # singleton object. This way you can create a reference to 
-    # it from any module you like and the configuration values 
+
+    # Instantiating `Configuration` will always return the same
+    # singleton object. This way you can create a reference to
+    # it from any module you like and the configuration values
     # will be consistent from instance to instance.
     config = Configuration()
-    
+
     # Access fields by name.
     config.HOST == "localhost"
 
@@ -67,7 +71,7 @@ The ``configclass`` decorator also accepts user-specified sources of configurati
 data.
 
 ::
-  
+
     from configclasses import configclass, sources
 
     # Create multiple sources of configuration information.
@@ -81,18 +85,18 @@ data.
         HOST: str
         PORT: int
         DATABASE: str = "psql://localhost:5432"  # Set a default value
-    
-    # Instantiating `Configuration` will always return the same 
+
+    # Instantiating `Configuration` will always return the same
     # singleton object.
     config = Configuration()
-    
+
     # Access fields by name.
     config.HOST == "localhost"
-        
-The ``Configuration`` class will now search command line arguments, environment variables,
-and a `.env` file for ``HOST``, ``PORT``, and ``DATABASE``. 
 
-If a field name is found in multiple sources, sources are prioritized in the order they 
+The ``Configuration`` class will now search command line arguments, environment variables,
+and a `.env` file for ``HOST``, ``PORT``, and ``DATABASE``.
+
+If a field name is found in multiple sources, sources are prioritized in the order they
 are passed to the ``configclass`` decorator, giving the first source the highest priority.
 
 
@@ -116,7 +120,7 @@ Features
 
     - primitive types such as ``int``, ``float``, and ``str`` are supported.
     - ``Enum`` types can be used to specify valid values
-    - ``converter`` functions can turn stringly typed values complex types 
+    - ``converter`` functions can turn stringly typed values complex types
       such as dicts or your own types.
 
 Planned work
@@ -145,6 +149,8 @@ Installation
 User's Guide
 ------------
 
+Tutorials to guide you through the most common uses of the library as
+well as more advanced scenarios.
 .. toctree::
   :maxdepth: 2
 
@@ -153,7 +159,7 @@ User's Guide
 API Documentation
 -----------------
 
-What are the api docs about?
+Here is where you'll find comprehensive documentation for the public api.
 
 .. toctree::
    :maxdepth: 2
@@ -163,6 +169,8 @@ What are the api docs about?
 
 Contribution
 ------------
+
+Contributors are the best!
 
 .. toctree::
   :maxdepth: 2
