@@ -7,9 +7,11 @@ conversions considered useful to api consumers.
 """
 
 from decimal import Decimal
+from typing import Union
 
+T = Union[bool, str, bytes, bytearray, int, float, Decimal]
 
-def to_bool(value) -> bool:
+def to_bool(value: T) -> bool:
     """
     Convert a bool, string type or numeric type to a bool.
 
@@ -28,10 +30,10 @@ def to_bool(value) -> bool:
             # TODO tell the user what field this is
             raise ValueError(f"{value} is not a valid boolean value")
     elif isinstance(value, (bytes, bytearray)):
-        upper = value.upper()
-        if upper in [b"TRUE", b"1"]:
+        upper_b = value.upper()
+        if upper_b in [b"TRUE", b"1"]:
             return True
-        elif upper in [b"FALSE", b"0"]:
+        elif upper_b in [b"FALSE", b"0"]:
             return False
         else:
             # TODO tell the user what field this is

@@ -6,6 +6,7 @@ global configuration objects.
 from enum import Enum
 import re
 from types import FunctionType
+from typing import Any, Dict, Set, Tuple, Type
 
 from dataclasses import dataclass, MISSING, Field as DField
 
@@ -19,8 +20,8 @@ from .sources import EnvironmentSource, FieldsDependentSource
 # created and initialized once per configclass type and that subsequent
 # instantiation returns the previously initialized singleton object
 # The shape of the instance registry dict is {ClassType: [instance, initialized_bool_flag]}
-_WRAP_REGISTRY = set()
-_INSTANCE_REGISTRY = {}
+_WRAP_REGISTRY: Set[Type] = set()
+_INSTANCE_REGISTRY: Dict[Type, Tuple[Any, bool]] = {}
 
 MISSING_ARGUMENTS_REGEX = re.compile(r"__init__\(\) missing (?P<nargs>\d+) required positional arguments?: (?P<names>.*)\Z")
 
