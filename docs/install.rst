@@ -6,19 +6,6 @@ Installation
 ``configclasses`` can be installed with all the traditional python tools.
 
 
-Virtual Environment
--------------------
-It is best practice to install packages into an isolated python environment.
-The most common method is to create and activate a virtual environment with
-virtualenv::
-
-    $ virtualenv venv
-    $ source venv/bin/activate
-
-If you don't have `virtualenv <https://virtualenv.pypa.io/en/stable/>`_ installed,
-follow the instructuions in their documentation.
-
-
 Pip Install configclasses
 -------------------------
 
@@ -56,7 +43,7 @@ You can clone the repository::
     $ git clone git://github.com/jeffbelgum/configclasses.git
 
 Once you have a copy of the source, you can embed it in your own Python
-packae or install it into your site-packages easily::
+package or install it into your site-packages easily::
 
     $ python setup.py install
 

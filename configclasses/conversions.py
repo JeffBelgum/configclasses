@@ -93,7 +93,7 @@ def quote_stripped(value: str) -> str:
 
 def kv_list(value: str) -> dict:
     """
-    Kv lists are comma seperated pairs of values where a pair is defined as
+    Kv lists are comma separated pairs of values where a pair is defined as
     ``"key=value"``. Whitespace around a key or value is stripped unless
     text is quoted. Empty pairs are skipped.
 

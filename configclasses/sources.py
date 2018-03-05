@@ -49,7 +49,7 @@ class EnvironmentSource(Source):
     :param namespace: An optional string prefix to match on with environment variables.
     :param environ: A different source of environment variables can be passed if you don't want to use os.environ.
 
-    If ``namespace`` is provided, only environment variable names that startwith
+    If ``namespace`` is provided, only environment variable names that start with
     the namespace value will be considered. The namespace is also stripped off
     the variable name before it is stored.
     """
@@ -235,7 +235,7 @@ class CommandLineSource(FieldsDependentSource):
     Get configuration values from command line arguments. Adds command line arguments
     for each field in the associated configclass.
 
-    :param argparse: Optionally pass in a prexisting `argparse.ArgumentParser` instance to add to an existing set of command line arguments rather than only using auto-generated command line arguments.
+    :param argparse: Optionally pass in a preexisting `argparse.ArgumentParser` instance to add to an existing set of command line arguments rather than only using auto-generated command line arguments.
     :param argv: Optionally pass a custom argv list. Most useful for testing.
     """
     def __init__(self, argparse=None, argv=sys.argv):

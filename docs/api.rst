@@ -5,10 +5,10 @@ API Documentation
 
 .. module:: configclasses
 
-The API documentation covers the full public api for the libary including
+The API documentation covers the full public api for the library including
 examples for more complicated features. The configclass decorator is described
 followed by pluggable sources of configuration values, and finally convenience
-enums and data type conversion runctionality.
+enums and data type conversion functionality.
 
 Configclass
 -----------

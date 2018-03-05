@@ -105,7 +105,7 @@ are passed to the ``configclass`` decorator, giving the first source the highest
 Features
 ^^^^^^^^
 
-  * Globally accessable configuration classes
+  * Globally accessible configuration classes
   * Easily pull from many sources of configuration:
 
     - Environment variables
