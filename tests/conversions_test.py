@@ -3,7 +3,7 @@ from enum import Enum
 
 import pytest
 
-from configclasses.conversions import to_bool, kv_list, EnumConversionRegistry
+from configclasses.conversions import EnumConversionRegistry, kv_list, to_bool
 
 
 @pytest.mark.parametrize("input, expected", [

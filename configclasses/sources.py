@@ -9,17 +9,18 @@ TODO: link to documentation on implementing custom sources.
 """
 
 import argparse
-from enum import Enum
+import configparser
 import json
 import os
 import sys
-import configparser
+from enum import Enum
 
-from dataclasses import MISSING
 import requests
 import toml
+from dataclasses import MISSING
 
 from .conversions import quote_stripped
+
 
 class Source:
     """

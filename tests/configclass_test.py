@@ -4,10 +4,9 @@ import json
 import pytest
 
 from configclasses import configclass, field
+from configclasses.conversions import kv_list
 from configclasses.enums import Environment, LogLevel
 from configclasses.sources import EnvironmentSource, JsonSource
-from configclasses.conversions import kv_list
-
 
 # TODO: Test of all config sources with interactions, None types,
 #       missing types, conflicting types, order of precidence,

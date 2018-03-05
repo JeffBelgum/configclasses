@@ -3,16 +3,17 @@ Contains the configclass wrapper and the internal registry used to store
 global configuration objects.
 """
 
-from enum import Enum
 import re
+from enum import Enum
 from types import FunctionType
 from typing import Any, Dict, Set, Tuple, Type
 
-from dataclasses import dataclass, MISSING, Field as DField
+from dataclasses import MISSING
+from dataclasses import Field as DField
+from dataclasses import dataclass
 
 from .conversions import EnumConversionRegistry, to_bool
 from .sources import EnvironmentSource, FieldsDependentSource
-
 
 # The global wrap registry is used to check whether a class has already been
 # wrapped as a configclass.

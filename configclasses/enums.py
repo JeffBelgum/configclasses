@@ -3,8 +3,8 @@ Common configuration enums provided for user convenience. However, any subclass 
 python's ``enum.Enum`` will work as expected.
 """
 
-from enum import Enum
 import logging
+from enum import Enum
 
 
 class Environment(Enum):
