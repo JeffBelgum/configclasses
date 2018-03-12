@@ -5,8 +5,8 @@
 [![Coverage](https://codecov.io/gh/JeffBelgum/configclasses/branch/master/graph/badge.svg)](https://codecov.io/gh/JeffBelgum/configclasses)
 [![Docs](https://readthedocs.org/projects/configclasses/badge/?version=latest)](https://configclasses.readthedocs.io/en/latest/)
 [![Pypi](https://img.shields.io/pypi/v/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
-[![License](https://img.shields.io/pypi/l/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
 [![Versions](https://img.shields.io/pypi/pyversions/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
+[![License](https://img.shields.io/pypi/l/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
 
 Think python's dataclasses module [PEP-557](https://www.python.org/dev/peps/pep-0557/) for configuration.
 Pulls in configuration from various sources into a single integrated, global configuration
