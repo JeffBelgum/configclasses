@@ -3,6 +3,35 @@
 User's Guide
 ============
 
+Starting with the example shown in the introduction, let's dig into configclasses a bit::
+
+    from configclasses import configclass
+
+    # Wrap your configuration class in the `configclass` decorator
+    @configclass
+    class Configuration:
+        HOST: str
+        PORT: int
+        DATABASE: str
+
+    # Fields are populated when you construct a Configuration instance
+    config = Configuration()
+
+    # Access fields by name.
+    config.HOST == "localhost"
+
+You start by defining your own configuration class with the fields that
+you will need for your application. This is done exactly in the same way that
+it is done with dataclasses (`PEP-557 <https://www.python.org/dev/peps/pep-0557/>`_)
+
+Withou
+
+
+
+
+
+
+
 Example::
 
     from configclasses import configclass, LogLevel, Environment

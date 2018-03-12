@@ -13,7 +13,7 @@ To install configclasses, simply run this command in your terminal::
 
     $ pip install configclasses
 
-If you don't have `pip <https://pip.pypa.io>`_ installed,
+If you don't have `pip <https://pip.pypa.io/en/stable>`_ installed,
 `this Python installation guide <http://docs.python-guide.org/en/latest/starting/installation/>`_
 can guide you through the process.
 

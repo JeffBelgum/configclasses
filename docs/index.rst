@@ -185,8 +185,8 @@ License
 -------
 
 Licensor solely permits licensee to license under either of the following two options
- * `MIT license <http://opensource.org/licenses/MIT>`_
- * `Apache License, Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0>`_
+ * `MIT license <https://opensource.org/licenses/MIT>`_
+ * `Apache License, Version 2.0 <https://www.apache.org/licenses/LICENSE-2.0>`_
 
 .. toctree::
   :maxdepth: 2

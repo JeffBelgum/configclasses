@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+# disable=fixme,redefined-builtinlocally-disabled,too-few-public-methods,wrong-import-order,ungrouped-imports,no-member,too-many-instance-attributes
+
+[DESIGN]
+max-line-length=100
+
+[REPORTS]
+output-format=colorized
