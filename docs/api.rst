@@ -77,6 +77,6 @@ Enums
 Conversions
 -----------
 
-Conversion functions that can be specified as ``converters`` in configclass fields.
+Conversion functions that can be specified as the ``converter`` in a configclass field.
 
 .. autofunction:: configclasses.conversions.kv_list

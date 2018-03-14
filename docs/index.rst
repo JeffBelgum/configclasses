@@ -52,7 +52,6 @@ A Basic Example
     class Configuration:
         HOST: str
         PORT: int
-        DATABASE: str
 
     # Fields are populated when you construct a Configuration instance
     config = Configuration()
@@ -62,10 +61,10 @@ A Basic Example
 
 That's it!
 
-You now have a easy to use configuration class that fetches and validates all the
+You now have an easy to use configuration class that fetches and validates all the
 configuration values your application requires. It defaults to searching environment
 variables to populate fields. In this case, it expects environment variables to be
-set for ``HOST``, ``PORT``, and ``DATABASE``.
+set for ``HOST`` and ``PORT``.
 
 A `Slightly` More Advanced Example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -85,9 +84,8 @@ data.
     # Pass sources to the `configclass` decorator.
     @configclass(sources=[cli_source, env_var_source, dot_env_source])
     class Configuration:
-        HOST: str
+        HOST: str = "localhost"  # Set a default value
         PORT: int
-        DATABASE: str = "psql://localhost:5432"  # Set a default value
 
     # Instantiating `Configuration` will always return the same
     # singleton object. This way you can create a reference to
@@ -99,7 +97,7 @@ data.
     config.HOST == "localhost"
 
 The ``Configuration`` class will now search command line arguments, environment variables,
-and a `.env` file for ``HOST``, ``PORT``, and ``DATABASE``.
+and a `.env` file for ``HOST`` and ``PORT``.
 
 If a field name is found in multiple sources, sources are prioritized in the order they
 are passed to the ``configclass`` decorator, giving the first source the highest priority.
@@ -160,7 +158,7 @@ well as more advanced scenarios.
 .. toctree::
   :maxdepth: 2
 
-  guide
+  guide/index
 
 API Documentation
 -----------------

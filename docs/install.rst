@@ -28,8 +28,8 @@ simple but comprehensive manner::
     $ pip install pipenv
     $ pipenv install configclasses
 
-Full documentation can be found on `readthedocs <https://pipenv.readthedocs.io/en/latest/>`_
-Give it a try!
+Full documentation can be found on `readthedocs <https://pipenv.readthedocs.io/en/latest/>`_.
+Why not give it a try!
 
 
 Get the Source Code
