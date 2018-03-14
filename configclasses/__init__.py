@@ -9,7 +9,7 @@ See full documentation at <https://configclasses.readthedocs.io/en/latest/>
 :license: MIT or Apache 2.0, see LICENSE-MIT and LICENSE-APACHE for more details.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 
 from . import conversions, enums, sources
