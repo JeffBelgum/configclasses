@@ -201,7 +201,10 @@ def _process_config_class(cls, sources):
             return to_bool(raw_value)
         elif getattr(field, "converter", None) is not None:
             # We have a converter function to use
-            return field.converter(raw_value)
+            value = field.converter(raw_value)
+            if not isinstance(value, field.type):
+                raise TypeError("Custom converter function did not produce the required type")
+            return value
         else:
             # Most primitive types handle conversions in the constructor.
             return field.type(raw_value)

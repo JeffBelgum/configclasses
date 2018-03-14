@@ -3,7 +3,7 @@ from enum import Enum
 
 import pytest
 
-from configclasses.conversions import EnumConversionRegistry, kv_list, to_bool
+from configclasses.conversions import EnumConversionRegistry, csv_list, csv_pairs, to_bool
 
 
 @pytest.mark.parametrize("input, expected", [
@@ -49,11 +49,15 @@ def test_to_bool_exceptions(input, expected):
     with pytest.raises(expected):
         to_bool(input)
 
-def test_kv_list_conversion():
-    actual = kv_list("a=1, b= 2 , c = 'this that',  d_key=d values=c,")
+def test_csv_pairs_conversion():
+    actual = csv_pairs("a=1, b= 2 , c = 'this that',  d_key=d values=c,")
     expected = {"a": "1", "b": "2", "c": "this that", "d_key": "d values=c"}
     assert actual == expected
 
+def test_csv_pairs_conversion():
+    actual = csv_list("a, b, c,  d , ' e  ',")
+    expected = ["a", "b", "c", "d", " e  "]
+    assert actual == expected
 
 # Enums and fixtures for testing EnumConversionRegistry
 class Color(Enum):

@@ -79,4 +79,6 @@ Conversions
 
 Conversion functions that can be specified as the ``converter`` in a configclass field.
 
-.. autofunction:: configclasses.conversions.kv_list
+.. autofunction:: configclasses.conversions.csv_list
+
+.. autofunction:: configclasses.conversions.csv_pairs

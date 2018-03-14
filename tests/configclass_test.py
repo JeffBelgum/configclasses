@@ -4,7 +4,7 @@ import json
 import pytest
 
 from configclasses import configclass, field
-from configclasses.conversions import kv_list
+from configclasses.conversions import csv_pairs
 from configclasses.enums import Environment, LogLevel
 from configclasses.sources import EnvironmentSource, JsonSource
 
@@ -123,7 +123,7 @@ def test_converter_configclass():
     @configclass(sources=[env_src])
     class Configuration:
         JSON_FIELD: dict = field(converter=json.loads)
-        KV_FIELD: dict = field(converter=kv_list)
+        KV_FIELD: dict = field(converter=csv_pairs)
 
     config = Configuration()
     assert config.JSON_FIELD == json_field

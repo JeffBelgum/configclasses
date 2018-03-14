@@ -93,7 +93,7 @@ def quote_stripped(value: str) -> str:
     return value
 
 
-def kv_list(value: str) -> dict:
+def csv_pairs(value: str) -> dict:
     """
     Kv lists are comma separated pairs of values where a pair is defined as
     ``"key=value"``. Whitespace around a key or value is stripped unless
@@ -103,14 +103,14 @@ def kv_list(value: str) -> dict:
 
     An example usage:
 
-    >>> kv_list("a=1,b=2")
+    >>> csv_pairs("a=1,b=2")
     {"a": "1", "b": "2"}
 
     Typically it is used in specifying a configclass:
 
     >>> @configclass
     ... class Configuration:
-    ...     PAIRS: dict = field(converter=kv_list)
+    ...     PAIRS: dict = field(converter=csv_pairs)
 
     Then a string of key=value pairs will be converted into a dictionary
     in the ``Configuration`` class.
@@ -126,3 +126,24 @@ def kv_list(value: str) -> dict:
         kv[key] = val
 
     return kv
+
+def csv_list(value: str) -> list:
+    """
+    csv_lists are comma separated values. Whitespace around a value is stripped
+    unless text is quoted. Empty values are skipped.
+
+    An example usage:
+
+    >>> csv_list("a,b,c")
+    ["a", "b", "c"]
+
+    Typically it is used in specifying a configclass:
+
+    >>> @configclass
+    ... class Configuration:
+    ...     LIST: list = field(converter=csv_list)
+
+    Then a string of values will be converted into a list of strings
+    in the ``Configuration`` class.
+    """
+    return [quote_stripped(elem.strip()) for elem in value.split(",") if elem.strip()]

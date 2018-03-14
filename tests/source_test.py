@@ -7,7 +7,6 @@ import pytest
 from dataclasses import MISSING
 
 from configclasses import configclass
-from configclasses.conversions import kv_list
 from configclasses.enums import Environment, LogLevel
 from configclasses.sources import (
     CommandLineSource,
