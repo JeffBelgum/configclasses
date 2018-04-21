@@ -30,12 +30,13 @@ class Field(DField):
     """
     Subclasses the `dataclasses.Field` type and adds a converter attribute.
     """
-    def __init__(self, converter, default, default_factory, init, repr, hash, compare, metadata):
+    def __init__(self, converter, validator, default, default_factory, init, repr, hash, compare, metadata):
         super().__init__(default, default_factory, init, repr, hash, compare, metadata)
         self.converter = converter
+        self.validator = validator
 
 
-def field(*, converter=None, default=MISSING, default_factory=MISSING, init=True, repr=True, hash=None, compare=True, metadata=None):
+def field(*, converter=None, validator=None, default=MISSING, default_factory=MISSING, init=True, repr=True, hash=None, compare=True, metadata=None):
     """
     This function can be used if the field differs from the default functionality.
     It is the same as the field function in the dataclasses module except that it
@@ -43,6 +44,7 @@ def field(*, converter=None, default=MISSING, default_factory=MISSING, init=True
     type to a more complex type such as a dict or custom class.
 
     :param converter: is a function that takes a single argument and constructs a return value that is the same as the conficlass field's type annotation.
+    :param converter: is a function that takes a single argument and returns True or False depending on whether that argument is considerd a valid value.
     :param default: is the default value of the field.
     :param default_factory: is a 0-argument function called to initialize a field's value.
     :param init: if True, the field will be a parameter to the class's __init__() function.
@@ -56,7 +58,7 @@ def field(*, converter=None, default=MISSING, default_factory=MISSING, init=True
     """
     if default is not MISSING and default_factory is not MISSING:
         raise ValueError('cannot specify both default and default_factory')
-    return Field(converter, default, default_factory, init, repr, hash, compare, metadata)
+    return Field(converter, validator, default, default_factory, init, repr, hash, compare, metadata)
 
 
 def configclass(_cls=None, *, source=None, sources=None):
@@ -189,7 +191,17 @@ def _process_config_class(cls, sources):
                 # raise ValueError(f"Could not find configuration value for {name}")
                 continue
 
-            kwargs[name] = self.convert_raw_value(field, value)
+            value = self.convert_raw_value(field, value)
+            if getattr(field, 'validator', None):
+                try:
+                    if callable(field.validator):
+                        if not field.validator(value):
+                            raise ValueError(f"Value fails validation function")
+                    elif value not in field.validator:
+                        raise ValueError(f"Value fails validation function")
+                except TypeError as exc:
+                    raise TypeError("Bad validation function") from exc
+            kwargs[name] = value
 
         return kwargs
 
