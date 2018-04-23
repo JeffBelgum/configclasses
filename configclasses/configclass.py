@@ -85,14 +85,14 @@ def configclass(_cls=None, *, source=None, sources=None):
     and environment variables as sources:
 
     >>> from configclasses import configclass, sources
-    >>> cli_source = CommandLineSource()
     >>> env_source = EnvironmentSource()
+    >>> cli_source = CommandLineSource()
     >>> @configclass(sources=[cli_source, env_source])
     ... class Configuration:
     ...     HOST: str
     ...     PORT: int
 
-    Because the ``cli_source`` comes before the ``env_source`` in the list of ``sources``,
+    Because the ``cli_source`` comes `after` the ``env_source`` in the list of ``sources``,
     it will be prioritized when fetching values that are found in both sources.
 
     Decorate your configuration classes with the `configclass` decorator to turn them into
@@ -178,9 +178,9 @@ def _process_config_class(cls, sources):
         for name, field in self.__dataclass_fields__.items():
             value = MISSING
 
-            # Try to fetch the value from the various sources in order, breaking
-            # after the first non-MISSING value
-            for source in self.sources:
+            # Try to fetch the value from the various sources in right-to-left order,
+            # breaking after the first non-MISSING value
+            for source in reversed(self.sources):
                 this_value = source.get(name)
                 if this_value is not MISSING:
                     value = this_value

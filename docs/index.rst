@@ -75,14 +75,11 @@ data.
 ::
 
     from configclasses import configclass, sources
+    from configclasses.sources import CommandLineSource, DotEnvSource, EnvironmentSource
 
-    # Create multiple sources of configuration information.
-    cli_source = sources.CommandLineSource()
-    env_var_source = sources.EnvironmentSource()
-    dot_env_source = sources.DotEnvSource(path=".env")
-
-    # Pass sources to the `configclass` decorator.
-    @configclass(sources=[cli_source, env_var_source, dot_env_source])
+    # Create multiple sources of configuration information, and pass them to the 
+    # `configclass` decorator.
+    @configclass(sources=[DotEnvSource(path=".env"), EnvironmentSource(), CommandLineSource()])
     class Configuration:
         HOST: str = "localhost"  # Set a default value
         PORT: int
@@ -99,8 +96,9 @@ data.
 The ``Configuration`` class will now search command line arguments, environment variables,
 and a `.env` file for ``HOST`` and ``PORT``.
 
-If a field name is found in multiple sources, sources are prioritized in the order they
-are passed to the ``configclass`` decorator, giving the first source the highest priority.
+If a field name is found in multiple sources, sources are prioritized based on how they are
+passed to the ``configclass`` decorator. Sources are prioritized from left to right, giving
+the last source the highest priority.
 
 
 Features

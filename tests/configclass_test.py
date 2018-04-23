@@ -80,7 +80,7 @@ def test_basic_configclass_with_multiple_readers():
     json_src = JsonSource(filehandle=io.StringIO(json_str), namespace=["APP-1"])
 
     # json_src values take precidence over env_src values
-    @configclass(sources=[json_src, env_src])
+    @configclass(sources=[env_src, json_src])
     class Configuration:
         ENVIRONMENT: Environment
         LOG_LEVEL: LogLevel
