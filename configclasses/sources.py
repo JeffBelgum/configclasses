@@ -242,7 +242,7 @@ class CommandLineSource(FieldsDependentSource):
     def __init__(self, argparse=None, argv=None):
         self.parser = argparse
         if argv is None:
-            self.argv = sys.argv[:1]
+            self.argv = sys.argv[1:]
         else:
             self.argv = argv
 
