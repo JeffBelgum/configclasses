@@ -264,7 +264,8 @@ class CommandLineSource(FieldsDependentSource):
 
             self.parser.add_argument(f"--{name}", choices=choices, type=_type, default=MISSING)
 
-        args = self.parser.parse_args(self.argv)
+        # Allow unknown args to play nice with other tools
+        args, _unknown = self.parser.parse_known_args(self.argv)
 
         self.canonical_kv_mapping = {}
         for key, value in vars(args).items():
