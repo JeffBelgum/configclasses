@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='configclasses',
-    version='0.3.0',
+    version='0.4.0',
     description='Strongly typed configuration classes made simple and effective.',
     url='http://github.com/jeffbelgum/configclasses',
     author='Jeff Belgum',
