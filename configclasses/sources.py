@@ -259,7 +259,7 @@ class CommandLineSource(FieldsDependentSource):
             else:
                 _type = str
 
-            self.parser.add_argument(f"--{name}", choices=choices, type=_type)
+            self.parser.add_argument(f"--{name}", choices=choices, type=_type, default=MISSING)
 
         args = self.parser.parse_args(self.argv)
 
