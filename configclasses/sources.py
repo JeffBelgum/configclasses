@@ -239,9 +239,12 @@ class CommandLineSource(FieldsDependentSource):
     :param argparse: Optionally pass in a preexisting `argparse.ArgumentParser` instance to add to an existing set of command line arguments rather than only using auto-generated command line arguments.
     :param argv: Optionally pass a custom argv list. Most useful for testing.
     """
-    def __init__(self, argparse=None, argv=sys.argv):
+    def __init__(self, argparse=None, argv=None):
         self.parser = argparse
-        self.argv = argv
+        if argv is None:
+            self.argv = sys.argv[:1]
+        else:
+            self.argv = argv
 
     def update_with_fields(self, fields):
         if self.parser is None:
