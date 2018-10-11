@@ -42,6 +42,10 @@ class Source:
             return default
         return value
 
+    def reload(self):
+        """ Child classes that have a sensible reload strategy should override this method """
+        pass
+
 
 class EnvironmentSource(Source):
     """
