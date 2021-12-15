@@ -70,7 +70,7 @@ COMMON_KEY='environment common value'
 def test_default_dot_env_source(dot_env_mock_data):
     with patch('configclasses.sources.open', mock_open(read_data=dot_env_mock_data)) as m:
         src = DotEnvSource()
-    m.assert_called_once_with('.env')
+    m.assert_called_once_with('.env', 'rb')
     assert src.get("HOST") == "hostname"
     assert src.get("PORT") == "9999"
     assert src.get("host") is MISSING
@@ -78,7 +78,7 @@ def test_default_dot_env_source(dot_env_mock_data):
 def test_custom_path_dot_env_source(dot_env_mock_data):
     with patch('configclasses.sources.open', mock_open(read_data=dot_env_mock_data)) as m:
         src = DotEnvSource(path="custom_dot_env_path")
-    m.assert_called_once_with('custom_dot_env_path')
+    m.assert_called_once_with('custom_dot_env_path', 'rb')
     assert src.get("HOST") == "hostname"
     assert src.get("PORT") == "9999"
     assert src.get("host") is MISSING
@@ -86,7 +86,7 @@ def test_custom_path_dot_env_source(dot_env_mock_data):
 def test_namespaced_dot_env_source(dot_env_mock_data):
     with patch('configclasses.sources.open', mock_open(read_data=dot_env_mock_data)) as m:
         src = DotEnvSource(namespace="AWS_")
-    m.assert_called_once_with('.env')
+    m.assert_called_once_with('.env', 'rb')
     assert src.get("HOST") is MISSING
     assert src.get("SECRET_ACCESS_KEY") == "key from environ"
 
@@ -99,6 +99,15 @@ def test_json_source():
     # simple config
     string = json.dumps({"HOST": "localhost", "PORT": 8888})
     filehandle = io.StringIO(string)
+    src = JsonSource(filehandle=filehandle)
+    assert src.get("HOST") == "localhost"
+    assert src.get("PORT") == 8888
+    assert src.get("MISSING") is MISSING
+    assert src.get("MISSING", default="DEFAULT") == "DEFAULT"
+
+    # Bytes should work too
+    string = json.dumps({"HOST": "localhost", "PORT": 8888})
+    filehandle = io.BytesIO(string.encode())
     src = JsonSource(filehandle=filehandle)
     assert src.get("HOST") == "localhost"
     assert src.get("PORT") == 8888
@@ -168,30 +177,30 @@ def test_toml_source():
     PORT = 4
     """
 
-    filehandle = io.StringIO(string)
+    filehandle = io.BytesIO(string.encode())
     with pytest.raises(ValueError):
         src = TomlSource(path='fake-path', filehandle=filehandle)
     with pytest.raises(ValueError):
         src = TomlSource()
 
-    filehandle = io.StringIO(string)
+    filehandle = io.BytesIO(string.encode())
     src = TomlSource(filehandle=filehandle)
     assert src.get("HOST") == "top-level-host"
     assert src.get("PORT") == 1
     assert src.get("MISSING") is MISSING
     assert src.get("MISSING", default="DEFAULT") == "DEFAULT"
 
-    filehandle = io.StringIO(string)
+    filehandle = io.BytesIO(string.encode())
     src = TomlSource(filehandle=filehandle, namespace=["APP-1"])
     assert src.get("HOST") == "app-1-host"
     assert src.get("PORT") == 2
 
-    filehandle = io.StringIO(string)
+    filehandle = io.BytesIO(string.encode())
     src = TomlSource(filehandle=filehandle, namespace=["APP-1", "SERVICE-1", "INSTANCE-1"])
     assert src.get("HOST") == "nested-host"
     assert src.get("PORT") == 3
 
-    filehandle = io.StringIO(string)
+    filehandle = io.BytesIO(string.encode())
     with pytest.raises(KeyError):
         TomlSource(filehandle=filehandle, namespace=["APP-3"])
 
@@ -217,6 +226,14 @@ def test_ini_source():
         src = IniSource()
 
     filehandle = io.StringIO(string)
+    src = IniSource(filehandle=filehandle)
+    assert src.get("HOST") == "default-host"
+    assert src.get("PORT") == "0"
+    assert src.get("MISSING") is MISSING
+    assert src.get("MISSING", default="DEFAULT") == "DEFAULT"
+
+    # Bytes do not work
+    filehandle = io.BytesIO(string.encode())
     src = IniSource(filehandle=filehandle)
     assert src.get("HOST") == "default-host"
     assert src.get("PORT") == "0"

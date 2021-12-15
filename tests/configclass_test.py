@@ -108,7 +108,7 @@ def test_basic_configclass_with_missing_values():
         HOST: str
         PORT: int
 
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         config = Configuration()
 
 
