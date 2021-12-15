@@ -2,9 +2,9 @@ sudo: false
 language: python
 python:
   - "3.6"
-  - "3.7-dev"
+  - "3.7"
 
-install: pip install dataclasses requests toml pytest pytest-cov codecov 
+install: pip install dataclasses requests tomli pytest pytest-cov codecov 
 
 cache: pip
 

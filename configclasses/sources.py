@@ -16,7 +16,7 @@ import sys
 from enum import Enum
 
 import requests
-import toml
+import tomli
 from dataclasses import MISSING
 
 from .conversions import quote_stripped
@@ -101,7 +101,7 @@ class FileSource(Source):
         elif self.path is None and self.filehandle is None:
             raise ValueError("Either path or filehandle argument must be passed.")
         if self.path:
-            with open(self.path) as fh:
+            with open(self.path, "rb") as fh:
                 self.canonical_from_filehandle(fh)
         else:
             if self.filestart is not None:
@@ -124,7 +124,9 @@ class DotEnvSource(FileSource):
 
     def canonical_from_filehandle(self, fh):
         self.canonical_kv_mapping = {}
-        for line in fh.read().split("\n"):
+        data = fh.read()
+        string = data.decode() if isinstance(data, bytes) else data
+        for line in string.split("\n"):
             try:
                 key, value = line.split("=", 1)
             except ValueError:
@@ -185,7 +187,7 @@ class TomlSource(FileSource):
     :raises ValueError: It is an error if both ``path`` and ``filehandle`` are defined `or` neither ``path`` nor ``filehandle`` are defined.
     """
     def canonical_from_filehandle(self, fh):
-        obj = toml.load(fh)
+        obj = tomli.load(fh)
         if self.namespace is None:
             namespace = []
         else:
@@ -210,8 +212,12 @@ class IniSource(FileSource):
     `Note: Python ini parsing is case insensitive.`
     """
     def canonical_from_filehandle(self, fh):
-        config = configparser.ConfigParser()
-        config.read_file(fh)
+        try:
+            config = configparser.ConfigParser()
+            config.read_file(fh)
+        except TypeError:
+            config = configparser.ConfigParser()
+            config.read_string(fh.read().decode())
         if self.namespace:
             try:
                 self.canonical_kv_mapping = {k.upper(): quote_stripped(v) for k, v in config.items(self.namespace)}

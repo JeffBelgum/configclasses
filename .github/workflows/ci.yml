@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    # branches:
+    # - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: excitedleigh/setup-nox@v2.0.0
+
+    - name: Test package
+      run: pipx run tox

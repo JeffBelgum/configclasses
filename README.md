@@ -1,8 +1,8 @@
 # ConfigClasses
 
-[![Build Status](https://travis-ci.org/JeffBelgum/configclasses.svg?branch=master)](https://travis-ci.org/JeffBelgum/configclasses)
+[![Build Status](https://api.travis-ci.org/JeffBelgum/configclasses.svg?branch=master)](https://travis-ci.org/JeffBelgum/configclasses)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/ogvowuoyo2sosr1q?svg=true)](https://ci.appveyor.com/project/JeffBelgum/configclasses)
-[![Coverage](https://codecov.io/gh/JeffBelgum/configclasses/branch/master/graph/badge.svg)](https://codecov.io/gh/JeffBelgum/configclasses)
+[![Coverage](https://app.codecov.io/gh/JeffBelgum/configclasses/branch/master/graph/badge.svg)](https://app.codecov.io/gh/JeffBelgum/configclasses)
 [![Docs](https://readthedocs.org/projects/configclasses/badge/?version=latest)](https://configclasses.readthedocs.io/en/latest/)
 [![Pypi](https://img.shields.io/pypi/v/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
 [![Versions](https://img.shields.io/pypi/pyversions/configclasses.svg)](https://pypi.python.org/pypi/configclasses)
