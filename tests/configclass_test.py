@@ -1,5 +1,6 @@
 import io
 import json
+import sys
 
 import pytest
 
@@ -108,7 +109,7 @@ def test_basic_configclass_with_missing_values():
         HOST: str
         PORT: int
 
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError if sys.version_info < (3, 10) else TypeError):
         config = Configuration()
 
 

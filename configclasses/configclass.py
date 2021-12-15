@@ -4,6 +4,7 @@ global configuration objects.
 """
 
 import re
+import sys
 from enum import Enum
 from types import FunctionType
 from typing import Any, Dict, Set, Tuple, Type
@@ -31,7 +32,8 @@ class Field(DField):
     Subclasses the `dataclasses.Field` type and adds a converter attribute.
     """
     def __init__(self, converter, validator, default, default_factory, init, repr, hash, compare, metadata):
-        super().__init__(default, default_factory, init, repr, hash, compare, metadata, kw_only=True)
+        new_features = {} if sys.version_info < (3, 10) else {"kw_only": False}
+        super().__init__(default, default_factory, init, repr, hash, compare, metadata, **new_features)
         self.converter = converter
         self.validator = validator
 
