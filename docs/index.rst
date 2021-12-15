@@ -6,23 +6,23 @@
 ConfigClasses
 =========================================
 
-.. image:: https://travis-ci.org/JeffBelgum/configclasses.svg?branch=master
+.. image:: https://api.travis-ci.org/JeffBelgum/configclasses.svg?branch=master
     :target: https://travis-ci.org/JeffBelgum/configclasses
 
 .. image:: https://ci.appveyor.com/api/projects/status/ogvowuoyo2sosr1q?svg=true
     :target: https://ci.appveyor.com/project/JeffBelgum/configclasses
 
-.. image:: https://codecov.io/gh/JeffBelgum/configclasses/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/JeffBelgum/configclasses
+.. image:: https://app.codecov.io/gh/JeffBelgum/configclasses/branch/master/graph/badge.svg
+    :target: https://app.codecov.io/gh/JeffBelgum/configclasses
 
 .. image:: https://img.shields.io/pypi/v/configclasses.svg
-    :target: https://pypi.python.org/pypi/configclasses
+    :target: https://pypi.org/project/configclasses
 
 .. image:: https://img.shields.io/pypi/l/configclasses.svg
-    :target: https://pypi.python.org/pypi/configclasses
+    :target: https://pypi.org/project/configclasses
 
 .. image:: https://img.shields.io/pypi/pyversions/configclasses.svg
-    :target: https://pypi.python.org/pypi/configclasses
+    :target: https://pypi.org/project/configclasses
 
 
 Release v\ |version|. (:ref:`Installation <install>`)

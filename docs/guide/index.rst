@@ -27,7 +27,7 @@ it is done with dataclasses (`PEP-557 <https://www.python.org/dev/peps/pep-0557/
   they are a way of describing classes in python using type annotations that removes much of the 
   boilerplate. The ideas have existed for some time in alternative forms as 
   `attrs <https://github.com/python-attrs/attrs>`_,
-  `recordType <http://code.activestate.com/recipes/576586-dot-style-nested-lookups-over-dictionary-based-dat/>`_,
+  `recordType <https://code.activestate.com:443/recipes/576586-dot-style-nested-lookups-over-dictionary-based-dat>`_,
   `namedtuple <https://docs.python.org/3/library/collections.html#collections.namedtuple>`_, etc. I would suggest
   familiarizing yourself with the functionality before continuing to get the most out of this guide.
 

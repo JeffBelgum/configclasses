@@ -14,7 +14,7 @@ To install configclasses, simply run this command in your terminal::
     $ pip install configclasses
 
 If you don't have `pip <https://pip.pypa.io/en/stable>`_ installed,
-`this Python installation guide <http://docs.python-guide.org/en/latest/starting/installation/>`_
+`this Python installation guide <https://docs.python-guide.org/starting/installation/>`_
 can guide you through the process.
 
 
@@ -28,7 +28,7 @@ simple but comprehensive manner::
     $ pip install pipenv
     $ pipenv install configclasses
 
-Full documentation can be found on `readthedocs <https://pipenv.readthedocs.io/en/latest/>`_.
+Full documentation can be found on `readthedocs <https://pipenv.pypa.io/en/latest>`_.
 Why not give it a try!
 
 
